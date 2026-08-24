@@ -6,7 +6,7 @@ A smart, voice-controlled grocery shopping list app. Manage your shopping list h
 
 ## 🌐 Live Demo
 
-**👉 [voice-shopping-assistant-o0uxy51c3.vercel.app](https://voice-shopping-assistant-o0uxy51c3.vercel.app)**
+**👉 [voice-shopping-assistant-kappa.vercel.app](https://voice-shopping-assistant-kappa.vercel.app)**
 
 > No installation needed. Works in any modern browser on desktop or mobile.
 
