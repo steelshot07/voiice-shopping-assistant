@@ -43,22 +43,6 @@ app.add_middleware(
 
 
 # ---------------------------------------------------------
-# CORS fallback — inject header on every response so that
-# 4xx/5xx errors produced before the middleware fires still
-# carry the Access-Control-Allow-Origin header.
-# ---------------------------------------------------------
-
-
-@app.middleware("http")
-async def add_cors_header(request: Request, call_next):
-    origin = request.headers.get("origin", "")
-    response = await call_next(request)
-    if origin in ALLOWED_ORIGINS:
-        response.headers["Access-Control-Allow-Origin"] = origin
-    return response
-
-
-# ---------------------------------------------------------
 # Security headers
 # ---------------------------------------------------------
 
