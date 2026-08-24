@@ -232,7 +232,14 @@ _INTENT_PATTERNS: list[tuple[re.Pattern, str, float]] = [
     (re.compile(r"\bwhat\s+is\s+on\s+(?:my\s+)?(?:shopping\s+)?list\b"), "SHOW_LIST", 0.95),
     (re.compile(r"\blist\s+(?:my\s+)?(?:shopping\s+)?items\b"), "SHOW_LIST", 0.90),
 
-    # ── COMPLETE ITEM ──
+    # ── COMPLETE ALL ──
+    (re.compile(r"\b(?:complete|finish|mark)\s+(?:all|everything|the\s+(?:whole\s+)?(?:shopping\s+)?list)\b"), "COMPLETE_ALL", 0.95),
+    (re.compile(r"\bmark\s+(?:all|everything)\s+(?:as\s+)?(?:complete|done)\b"), "COMPLETE_ALL", 0.95),
+    (re.compile(r"\bmark\s+(?:my\s+)?(?:(?:shopping\s+)?list|all\s+items)\s+(?:as\s+)?(?:complete|done)\b"), "COMPLETE_ALL", 0.95),
+    (re.compile(r"\b(?:i\s+am\s+)?done\s+shopping\b"), "COMPLETE_ALL", 0.90),
+    (re.compile(r"\bfinish(?:ed)?\s+(?:shopping|my\s+list|all)\b"), "COMPLETE_ALL", 0.90),
+    (re.compile(r"\bcomplete\s+(?:my\s+)?(?:shopping\s+)?list\b"), "COMPLETE_ALL", 0.95),
+
     (re.compile(r"\b(?:complete|finish|done\s+with|check\s+off)\s+(?:the\s+)?(.+?)(?:\s+(?:as\s+)?(?:completed|done))?$"), "COMPLETE_ITEM", 0.90),
     (re.compile(r"\bmark\s+(?:the\s+)?(.+?)(?:\s+(?:as\s+)?(?:completed|complete|done))$"), "COMPLETE_ITEM", 0.90),
     (re.compile(r"\bi\s+am\s+done\s+with\s+(?:the\s+)?(.+)$"), "COMPLETE_ITEM", 0.85),
@@ -403,7 +410,7 @@ def _score_confidence(
         if items and items[0].quantity and items[0].quantity > 0:
             score += 0.02
 
-    if intent in ("CLEAR_LIST", "SHOW_LIST", "HELP"):
+    if intent in ("CLEAR_LIST", "SHOW_LIST", "HELP", "COMPLETE_ALL"):
         # These don't need entities
         score += 0.05
 

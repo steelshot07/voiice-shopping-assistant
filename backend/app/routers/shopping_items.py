@@ -21,6 +21,39 @@ router = APIRouter(
 )
 
 
+@router.patch(
+    "/complete-all",
+    response_model=list[ShoppingItemResponse],
+)
+def complete_all_items(
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    """Mark all active shopping items as completed."""
+    active_items = db.scalars(
+        select(ShoppingItem).where(
+            ShoppingItem.user_id == current_user.id,
+            ShoppingItem.completed.is_(False),
+        )
+    ).all()
+
+    for item in active_items:
+        item.completed = True
+        history = ShoppingHistory(
+            user_id=current_user.id,
+            product_id=item.product_id,
+            quantity=item.quantity,
+            unit=item.unit,
+        )
+        db.add(history)
+
+    db.commit()
+    for item in active_items:
+        db.refresh(item)
+
+    return list(active_items)
+
+
 @router.post(
     "",
     response_model=ShoppingItemResponse,

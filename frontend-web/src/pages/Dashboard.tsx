@@ -4,7 +4,7 @@ import {
   Leaf, Droplet, Coffee, Utensils, Heart, Home, Snowflake, Archive, Package, ShoppingCart
 } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
-import { getShoppingItems, updateShoppingItem, deleteShoppingItem, addShoppingItem } from "../api/shopping";
+import { getShoppingItems, updateShoppingItem, deleteShoppingItem, addShoppingItem, completeAllShoppingItems } from "../api/shopping";
 import { searchProducts, getCategories } from "../api/products";
 import type { ShoppingItem, Product, Category } from "../types/api";
 import { VoiceButton } from "../components/VoiceButton";
@@ -90,6 +90,17 @@ export function Dashboard() {
 
     try {
       await updateShoppingItem(token, item.id, { completed: !item.completed });
+    } catch {
+      setItems(originalItems);
+    }
+  };
+
+  const completeAll = async () => {
+    if (!token || activeItems.length === 0) return;
+    const originalItems = [...items];
+    setItems(items.map(i => i.completed ? i : { ...i, completed: true }));
+    try {
+      await completeAllShoppingItems(token);
     } catch {
       setItems(originalItems);
     }
@@ -182,9 +193,20 @@ export function Dashboard() {
     <div className="shopping-list-section">
       <div className="section-header">
         <h2 className="section-title">Shopping List</h2>
-        {activeCount > 0 && (
-          <span className="section-badge">{activeCount} item{activeCount !== 1 ? "s" : ""}</span>
-        )}
+        <div style={{ display: "flex", gap: "0.5rem", alignItems: "center" }}>
+          {activeCount > 0 && (
+            <span className="section-badge">{activeCount} item{activeCount !== 1 ? "s" : ""}</span>
+          )}
+          {activeCount > 0 && (
+            <button
+              className="btn btn-secondary"
+              style={{ padding: "0.3rem 0.75rem", fontSize: "0.78rem" }}
+              onClick={completeAll}
+            >
+              <Check size={14} /> Complete All
+            </button>
+          )}
+        </div>
       </div>
 
       {isEmpty ? (

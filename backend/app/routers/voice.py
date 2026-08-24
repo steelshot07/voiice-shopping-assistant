@@ -579,6 +579,37 @@ def voice_command(
             context=ctx,
         )
 
+    # ── COMPLETE ALL ──
+    if parsed.intent == "COMPLETE_ALL":
+        active_items = db.scalars(
+            select(ShoppingItem).where(
+                ShoppingItem.user_id == current_user.id,
+                ShoppingItem.completed.is_(False),
+            )
+        ).all()
+
+        count = len(active_items)
+        if count == 0:
+            return VoiceCommandResponse(
+                intent="COMPLETE_ALL",
+                status="success",
+                message="Your shopping list is already empty.",
+                confidence=parsed.confidence,
+                transcript=parsed.raw_transcript,
+            )
+
+        for item in active_items:
+            item.completed = True
+        db.commit()
+
+        return VoiceCommandResponse(
+            intent="COMPLETE_ALL",
+            status="success",
+            message=f"Marked all {count} item(s) as complete. Great shopping trip!",
+            confidence=parsed.confidence,
+            transcript=parsed.raw_transcript,
+        )
+
     # ── COMPLETE ITEM ──
     if parsed.intent == "COMPLETE_ITEM":
         if not parsed.items:

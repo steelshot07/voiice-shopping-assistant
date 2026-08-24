@@ -35,3 +35,11 @@ export async function deleteShoppingItem(
         method: "DELETE",
     });
 }
+
+export async function completeAllShoppingItems(
+    token: string,
+): Promise<ShoppingItem[]> {
+    return apiRequest<ShoppingItem[]>("/items/complete-all", token, {
+        method: "PATCH",
+    });
+}
