@@ -1,0 +1,21 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: voice_shopping_postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: voice_shopping
+      POSTGRES_USER: shopping_user
+      POSTGRES_PASSWORD: shopping_password
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+  redis:
+    image: redis:7-alpine
+    container_name: voice_shopping_redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+volumes:
+  postgres_data:
