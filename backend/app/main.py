@@ -104,3 +104,14 @@ def health_check(
         "status": "ok",
         "database": result == 1,
     }
+
+
+# ---------------------------------------------------------
+# Public ping endpoint (no auth) — used by UptimeRobot
+# to keep the free Render instance alive.
+# ---------------------------------------------------------
+
+
+@app.get("/ping")
+def ping():
+    return {"status": "pong"}
