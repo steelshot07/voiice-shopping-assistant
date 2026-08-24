@@ -1,6 +1,6 @@
 from fastapi import Depends, FastAPI, Request, status
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse, Response
 from sqlalchemy import text
 from sqlalchemy.orm import Session
 
@@ -39,6 +39,20 @@ app.add_middleware(
 
 
 # ---------------------------------------------------------
+# CORS fallback — inject header on every response so that
+# 4xx/5xx errors produced before the middleware fires still
+# carry the Access-Control-Allow-Origin header.
+# ---------------------------------------------------------
+
+
+@app.middleware("http")
+async def add_cors_header(request: Request, call_next):
+    response = await call_next(request)
+    response.headers["Access-Control-Allow-Origin"] = "*"
+    return response
+
+
+# ---------------------------------------------------------
 # Security headers
 # ---------------------------------------------------------
 
@@ -60,19 +74,6 @@ async def security_headers(request: Request, call_next):
 # ---------------------------------------------------------
 
 
-@app.exception_handler(Exception)
-async def unhandled_exception_handler(
-    request: Request,
-    exc: Exception,
-):
-    # Full exception is intentionally not returned to the client.
-    # Uvicorn/FastAPI logging will retain the server-side traceback.
-    return JSONResponse(
-        status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-        content={
-            "detail": "Something went wrong",
-        },
-    )
 
 
 # ---------------------------------------------------------
