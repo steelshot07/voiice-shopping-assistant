@@ -11,10 +11,7 @@ class ShoppingHistory(Base):
     __tablename__ = "shopping_history"
 
     id: Mapped[int] = mapped_column(
-        BigInteger,
         primary_key=True,
-        autoincrement=True,
-        init=False,
     )
 
     user_id: Mapped[int] = mapped_column(
