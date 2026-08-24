@@ -29,12 +29,16 @@ app = FastAPI(
 # CORS
 # ---------------------------------------------------------
 
+ALLOWED_ORIGINS = [
+    "https://voice-shopping-assistant-o0uxy51c3.vercel.app",
+]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=ALLOWED_ORIGINS,
     allow_credentials=False,
-    allow_methods=["*"],
-    allow_headers=["*"],
+    allow_methods=["GET", "POST", "PATCH", "DELETE", "OPTIONS"],
+    allow_headers=["Authorization", "Content-Type", "Accept"],
 )
 
 
@@ -47,8 +51,10 @@ app.add_middleware(
 
 @app.middleware("http")
 async def add_cors_header(request: Request, call_next):
+    origin = request.headers.get("origin", "")
     response = await call_next(request)
-    response.headers["Access-Control-Allow-Origin"] = "*"
+    if origin in ALLOWED_ORIGINS:
+        response.headers["Access-Control-Allow-Origin"] = origin
     return response
 
 

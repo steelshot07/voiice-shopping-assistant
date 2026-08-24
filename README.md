@@ -1,92 +1,114 @@
 # Voice Shopping Assistant
 
-A smart, voice-controlled grocery shopping list application. Manage your shopping list hands-free using natural language commands, supported by a powerful NLP-style backend pipeline and a beautiful, mobile-first dark mode interface.
+A smart, voice-controlled grocery shopping list app. Manage your shopping list hands-free using natural language — say what you need, and it handles the rest.
+
+---
+
+## 🌐 Live Demo
+
+**👉 [voice-shopping-assistant-o0uxy51c3.vercel.app](https://voice-shopping-assistant-o0uxy51c3.vercel.app)**
+
+> No installation needed. Works in any modern browser on desktop or mobile.
+
+---
+
+## 🚀 Getting Started (First-Time Users)
+
+### 1. Create an Account
+- Open the app and tap **Sign Up**
+- Enter your email and a password, then tap **Create Account**
+- You'll be logged in automatically
+
+### 2. Add Items by Voice
+- Tap the **microphone button** in the centre of the screen
+- Speak naturally — for example:
+  - *"Add 2 litres of milk"*
+  - *"I need apples and bananas"*
+  - *"Add a dozen eggs"*
+- Release the button and your items will appear on the list
+
+### 3. Add Items Manually
+- Use the **search bar** at the top to find a product
+- Tap the **+** button next to any result to add it instantly
+- Or tap **Add item manually** to type a custom item
+
+### 4. Manage Your List
+- **Check off** an item by tapping the checkbox — it moves to "Completed"
+- **Change quantity** with the **−** and **+** buttons on each item
+- **Delete** an item with the trash icon on the right
+- Tap **Mark all done** to complete your entire shop in one go
+
+### 5. Browse by Category
+- Tap the **Explore** tab (bottom navigation) to browse products by category
+- Tap any product card to add it to your list
+
+### 6. View Purchase History
+- Tap the **History** tab to see everything you've previously purchased
+
+---
+
+## 🎙️ Voice Command Examples
+
+| What you say | What happens |
+|---|---|
+| *"Add 2 litres of milk"* | Adds 2 litres of milk to your list |
+| *"I need apples and bananas"* | Adds both items at once |
+| *"Remove the eggs"* | Deletes eggs from your list |
+| *"Change the milk to 3"* | Updates milk quantity to 3 |
+| *"What's on my list?"* | Reads back your current items |
+| *"Clear my entire list"* | Asks for confirmation, then clears all items |
+
+---
 
 ## 🌟 Features
 
-- **🗣️ Natural Language Voice Commands:** Say things like *"Add a couple of apples and half a dozen eggs"* and the assistant will accurately parse quantities, units, and products.
-- **🎨 Premium Dark Theme UI:** A fully responsive, PWA-ready web interface designed with Tailwind-inspired tokens and beautiful SVG icons (Lucide).
-- **🧠 Intelligent Disambiguation:** If a voice command is ambiguous (e.g., "Add milk" when multiple milk products exist), the system prompts the user to select the correct item.
-- **🛡️ Safe Destructive Actions:** Commands like "clear my list" require explicit user confirmation to prevent accidental deletion.
-- **⚡ Fast Modern Stack:** Built with React/Vite on the frontend and FastAPI on the backend.
+- **🗣️ Natural Language Voice Commands** — Understands a wide range of phrasings and quantities
+- **🧠 Smart Disambiguation** — If a command is ambiguous, it asks you to clarify
+- **🛡️ Safe Destructive Actions** — Clears and deletes always ask for confirmation
+- **📱 Mobile-First Design** — Works great on any screen size
+- **🌙 Dark Mode** — Easy on the eyes
 
 ---
 
 ## 🏗️ Architecture
 
-The project is split into two main components:
+| Layer | Technology |
+|---|---|
+| Frontend | React, TypeScript, Vite, Lucide Icons, Vanilla CSS |
+| Backend | FastAPI, Python, SQLAlchemy, SQLite |
+| Hosting | Vercel (frontend) · Render (backend) |
 
-1. **`backend/` (FastAPI + Python)**
-   - Provides REST APIs for authentication, products, and shopping list management.
-   - Houses the `voice.py` service, which runs a structured rule-based NLP pipeline (normalization → classification → extraction → routing).
-   - Uses SQLite for the database.
-
-2. **`frontend-web/` (React + Vite + TypeScript)**
-   - A Progressive Web App (PWA) with a responsive mobile-first design.
-   - Manages voice recording, state management, and real-time user feedback.
+The backend exposes a REST API. Voice input is processed by a structured NLP pipeline (normalisation → classification → extraction → routing) running entirely server-side in `backend/app/services/voice.py`.
 
 ---
 
-## 🚀 Getting Started
+## 🛠️ Local Development
 
 ### Prerequisites
-- Node.js (v18+)
-- Python (3.9+)
+- Node.js v18+
+- Python 3.9+
 
-### 1. Backend Setup
-
-Open a terminal and navigate to the `backend` folder:
+### Backend
 
 ```bash
 cd backend
-
-# Create a virtual environment
 python -m venv venv
 
-# Activate the virtual environment
-# On Windows:
+# Windows
 venv\Scripts\activate
-# On macOS/Linux:
+# macOS / Linux
 source venv/bin/activate
 
-# Install dependencies
 pip install -r requirements.txt
-
-# Start the server (runs on http://localhost:10000)
 uvicorn app.main:app --host 0.0.0.0 --port 10000 --reload
 ```
 
-### 2. Frontend Setup
-
-Open a separate terminal and navigate to the `frontend-web` folder:
+### Frontend
 
 ```bash
 cd frontend-web
-
-# Install dependencies
 npm install
-
-# Start the development server
 npm run dev
 ```
 
-The frontend will usually start at `http://localhost:5173`.
-
----
-
-## 🎙️ Example Voice Commands
-
-The assistant understands a variety of natural phrases:
-
-- **Adding items:** *"I need 2 liters of milk"* or *"Add apples and bananas to my list"*
-- **Removing items:** *"I don't need apples anymore"* or *"Remove the milk"*
-- **Updating quantity:** *"Change the eggs to 12"*
-- **Checking list:** *"What's on my list?"*
-- **Clearing list:** *"Clear my entire list"* (Will ask for confirmation)
-
----
-
-## 🛠️ Tech Stack
-
-- **Frontend:** React, TypeScript, Vite, Lucide React (Icons), Vanilla CSS
-- **Backend:** FastAPI, Python, SQLAlchemy, SQLite
+The frontend starts at `http://localhost:5173`.
