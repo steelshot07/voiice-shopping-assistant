@@ -14,6 +14,7 @@ class ShoppingHistory(Base):
         BigInteger,
         primary_key=True,
         autoincrement=True,
+        init=False,
     )
 
     user_id: Mapped[int] = mapped_column(
