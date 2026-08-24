@@ -30,7 +30,7 @@ app = FastAPI(
 # ---------------------------------------------------------
 
 ALLOWED_ORIGINS = [
-    "https://voice-shopping-assistant-o0uxy51c3.vercel.app",
+    "https://voice-shopping-assistant-kappa.vercel.app",
 ]
 
 app.add_middleware(
@@ -62,8 +62,6 @@ async def security_headers(request: Request, call_next):
 # ---------------------------------------------------------
 # Generic 500 error
 # ---------------------------------------------------------
-
-
 
 
 # ---------------------------------------------------------
